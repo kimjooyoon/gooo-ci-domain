@@ -1,0 +1,10 @@
+=== RUN   TestImpactQuantityAndFanout80717
+--- PASS: TestImpactQuantityAndFanout80717 (0.00s)
+=== RUN   TestBudgetAndParallelResources80717
+--- PASS: TestBudgetAndParallelResources80717 (0.00s)
+=== RUN   TestCostFeedbackAndCensoredOrigin80717
+--- PASS: TestCostFeedbackAndCensoredOrigin80717 (0.00s)
+=== RUN   TestUnknownImpactAndDeadline80717
+--- PASS: TestUnknownImpactAndDeadline80717 (0.00s)
+PASS
+ok  	github.com/kimjooyoon/meta-ontology-go/labs/cibudgetdomain	1.439s

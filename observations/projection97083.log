@@ -1,0 +1,4 @@
+=== RUN   TestSourceOwnedPolicyProjection97083
+--- PASS: TestSourceOwnedPolicyProjection97083 (0.00s)
+PASS
+ok  	github.com/kimjooyoon/gooo-ci-domain	1.439s

@@ -1,0 +1,7 @@
+{
+  "exit_code": 0,
+  "wall_seconds": 2.438192129135132,
+  "scope": "domain80717",
+  "type": "fresh local source cohort",
+  "test_log": "domain80717.log"
+}

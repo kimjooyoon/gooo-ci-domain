@@ -1,0 +1,4 @@
+=== RUN   TestCLIReservesSourceBeforeAutomaticExecution95573
+--- PASS: TestCLIReservesSourceBeforeAutomaticExecution95573 (1.12s)
+PASS
+ok  	github.com/kimjooyoon/gooo-ci-domain	2.597s

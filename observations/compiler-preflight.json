@@ -1,0 +1,19 @@
+{
+  "exit_code": 0,
+  "wall_seconds": 2.4393258094787598,
+  "packages": 431,
+  "changed_inputs": 765,
+  "global_inputs": 671,
+  "graph_units": 2059,
+  "graph_edges": 3529,
+  "required_tests": 431,
+  "decision": "COST_UNRESOLVED",
+  "forecast_work_ms": null,
+  "executions": 0,
+  "source_digest": "613921903fdaf674820d5d0f1c4edba28bd8b56f38dd1705b1019afde441db16",
+  "base_revision": "19586308b02b63ac95c3eab957f0f44e30eb0dc9",
+  "head_revision": "9b9c522f354a02c20ee7b6c34f6a8c8104ef7f04",
+  "producer_source_archive": "preflight-tool-source.tar.gz",
+  "producer_scope": "host-module tracked-source Go-test obligations",
+  "collection_mode": "read-only; zero tests executed"
+}

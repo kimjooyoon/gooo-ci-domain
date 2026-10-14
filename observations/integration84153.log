@@ -1,0 +1,6 @@
+=== RUN   TestObservedImportsAndUnownedInputs84153
+--- PASS: TestObservedImportsAndUnownedInputs84153 (0.24s)
+=== RUN   TestExecuteAndFeedback84153
+--- PASS: TestExecuteAndFeedback84153 (1.54s)
+PASS
+ok  	github.com/kimjooyoon/gooo-ci-domain	3.232s

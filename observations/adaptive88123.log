@@ -1,0 +1,8 @@
+=== RUN   TestCriticalWorkCannotBeHiddenByWorkers84279
+--- PASS: TestCriticalWorkCannotBeHiddenByWorkers84279 (0.00s)
+=== RUN   TestAutomaticCostDiscoveryAndNextSource88123
+    discovery_fresh88123_test.go:38: first source: prediction unavailable; complete packages=2; observed origins=3; scope_ms=857
+    discovery_fresh88123_test.go:58: next source: forecast_work_ms=729; observed scope_ms=702; required_packages=2
+--- PASS: TestAutomaticCostDiscoveryAndNextSource88123 (1.69s)
+PASS
+ok  	github.com/kimjooyoon/gooo-ci-domain	3.155s

@@ -1,0 +1,4 @@
+=== RUN   TestRuntimeGoooInputOrigin94517
+--- PASS: TestRuntimeGoooInputOrigin94517 (0.94s)
+PASS
+ok  	github.com/kimjooyoon/gooo-ci-domain	2.415s

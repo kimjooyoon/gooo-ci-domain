@@ -1,0 +1,50 @@
+[
+  {
+    "activity": "AdmitPlan",
+    "source": "origins/policygen80411.gooo",
+    "source_sha256": "bc6182b611572b9f2e168f3a137d3de3bd4d10a8fb892413d5e772df792beac3",
+    "generated": "policy_generated.go",
+    "generated_sha256": "a13d8b4463e01b856045ea5d7e33fcb2cc075cf3383dcf6d13e26c720a6ec7b6",
+    "raw_generation_receipt_sha256": "cc29e3373d709c5b970d9e177d05412b53056cb9a6519a047095a35875e506bf",
+    "generator_decision": "PASS",
+    "compiler_revision": "9b9c522f354a02c20ee7b6c34f6a8c8104ef7f04",
+    "compiler_repository": "https://github.com/kimjooyoon/meta-ontology-go",
+    "toolchain": "go1.27.2"
+  },
+  {
+    "activity": "NextStep",
+    "source": "origins/policygen85941.gooo",
+    "source_sha256": "fbae048fc306c4a47867a4d08c02a116a4c8977da69f5c362375215efc71359b",
+    "generated": "next_step_generated.go",
+    "generated_sha256": "db887e136675d11586e397311be82e593116924775c7f6724ff5fc61a5aeb8f6",
+    "raw_generation_receipt_sha256": "dd563ff214675167d9be5e2fe26793dffd8adfa3b9ea4e3904de59a824f89845",
+    "generator_decision": "PASS",
+    "compiler_revision": "9b9c522f354a02c20ee7b6c34f6a8c8104ef7f04",
+    "compiler_repository": "https://github.com/kimjooyoon/meta-ontology-go",
+    "toolchain": "go1.27.2"
+  },
+  {
+    "activity": "AdmitDiscovery",
+    "source": "origins/policygen85941.gooo",
+    "source_sha256": "fbae048fc306c4a47867a4d08c02a116a4c8977da69f5c362375215efc71359b",
+    "generated": "discovery_generated.go",
+    "generated_sha256": "d7309c74cdec12eaa60ef4f8af23caa6b759f2732d2fcd1d903f92dada22333a",
+    "raw_generation_receipt_sha256": "91bd7030179a0fade7745e4d71787b3b2dd2bf690546a7327d81f6ffe4ec6eb9",
+    "generator_decision": "PASS",
+    "compiler_revision": "9b9c522f354a02c20ee7b6c34f6a8c8104ef7f04",
+    "compiler_repository": "https://github.com/kimjooyoon/meta-ontology-go",
+    "toolchain": "go1.27.2"
+  },
+  {
+    "activity": "ReserveCost",
+    "source": "origins/policygen97083.gooo",
+    "source_sha256": "255947b070ab3f1cba7985c7e50e697d31327052cc23cc0d4406496d7c192470",
+    "generated": "reserve_generated.go",
+    "generated_sha256": "4d0e1b58e4aa27528e092c7e55b3d0daa3f110acbc1486034b00bf5fb01800ad",
+    "raw_generation_receipt_sha256": "f9cd89364ba3afc11061aa9122a3d218e616cbf12dcaf69a3f548abad20c3161",
+    "generator_decision": "PASS",
+    "compiler_revision": "9b9c522f354a02c20ee7b6c34f6a8c8104ef7f04",
+    "compiler_repository": "https://github.com/kimjooyoon/meta-ontology-go",
+    "toolchain": "go1.27.2"
+  }
+]

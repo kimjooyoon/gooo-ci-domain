@@ -1,0 +1,13 @@
+=== RUN   TestDeadlineAndBoundedOutput83147
+--- PASS: TestDeadlineAndBoundedOutput83147 (0.22s)
+=== RUN   TestJournalAndFiniteNextAction83147
+--- PASS: TestJournalAndFiniteNextAction83147 (0.01s)
+=== RUN   TestObservedImportsAndUnownedInputs83147
+    repository_fresh83147_test.go:66: package is outside module source
+--- FAIL: TestObservedImportsAndUnownedInputs83147 (0.17s)
+=== RUN   TestExecuteAndFeedback83147
+    repository_fresh83147_test.go:100: package is outside module source
+--- FAIL: TestExecuteAndFeedback83147 (0.13s)
+FAIL
+FAIL	github.com/kimjooyoon/gooo-ci-domain	0.902s
+FAIL

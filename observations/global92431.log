@@ -1,0 +1,5 @@
+=== RUN   TestFactoredGlobalInputsPreserveObligations92431
+    global_domain_fresh92431_test.go:30: inputs=400; required_packages=512; dependency_edges=2448; unfactored_global_edges=204800
+--- PASS: TestFactoredGlobalInputsPreserveObligations92431 (0.04s)
+PASS
+ok  	github.com/kimjooyoon/gooo-ci-domain	1.470s

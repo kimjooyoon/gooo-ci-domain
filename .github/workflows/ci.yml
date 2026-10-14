@@ -1,0 +1,40 @@
+name: CI domain
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: domain-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+jobs:
+  domain:
+    name: Domain checks (180 seconds)
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    env:
+      GOTOOLCHAIN: go1.27.2
+      GOWORK: off
+      GOMAXPROCS: 2
+    steps:
+      - name: Bind the original run clock
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          run_started_at="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" --jq .created_at)"
+          printf 'CI_SCOPE_STARTED_AT=%s\n' "$run_started_at" >> "$GITHUB_ENV"
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@v7
+        with:
+          go-version: 1.27.2
+          cache: false
+      - name: Verify source projections and domain behavior
+        run: |
+          test "$(go env GOVERSION)" = "go1.27.2"
+          test -z "$(gofmt -l .)"
+          go run -p=1 ./cmd/gooo-ci-domain verify --started-at "$CI_SCOPE_STARTED_AT" --budget-ms 180000

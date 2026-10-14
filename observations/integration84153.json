@@ -1,0 +1,7 @@
+{
+  "exit_code": 0,
+  "wall_seconds": 3.538766860961914,
+  "scope": "integration84153",
+  "type": "fresh local source cohort",
+  "test_log": "integration84153.log"
+}
