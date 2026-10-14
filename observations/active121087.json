@@ -1,0 +1,11 @@
+{
+  "cohort": "active121087",
+  "scope": "newly authored local command-domain fixtures",
+  "original": true,
+  "local_reruns": 0,
+  "exit_code": 0,
+  "wall_seconds": 3.335080862045288,
+  "producer_manifest_sha256": "2784534d6921e5a2266eaf87c873eb5392cce0214167b495869bedc10f43ea56",
+  "stdout_sha256": "edd94a3bf63cb30d62ba380512f9d67e8045b0f88e4820d559c8791f20dd3965",
+  "whole_compiler_ci": false
+}

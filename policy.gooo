@@ -27,6 +27,7 @@ if input == "DEADLINE_EXCEEDED" { return "RECALIBRATE_CENSORED_COST" }
 if input == "VERIFY_FAILED" { return "REPAIR_SOURCE" }
 if input == "VERIFIED_SCOPED" { return "RECORD_ORIGIN" }
 if input == "VERIFIED_DISCOVERY" { return "RECORD_ORIGIN" }
+if input == "COMMAND_COMPLETED" { return "RECORD_ORIGIN" }
 return "REPAIR_PLAN_CONTRACT"
 `
 
@@ -44,4 +45,12 @@ return "MEASURE_NEW_COHORT"
 # Cost reserve policy is source-owned; observations supply its operands.
 activity ReserveCost(Integer, Integer) -> Integer id "urn:gooo:ci-domain:reserve-cost" computes `
 return input0 + input1
+`
+
+# A command outcome owns one exact command scope.
+activity ClassifyWorkOutcome(Boolean, Integer, Boolean) -> Text id "urn:gooo:ci-domain:classify-work-outcome" computes `
+if input0 { return "DEADLINE_EXCEEDED" }
+if !input2 { return "ORIGIN_UNAVAILABLE" }
+if input1 != 0 { return "VERIFY_FAILED" }
+return "COMMAND_COMPLETED"
 `

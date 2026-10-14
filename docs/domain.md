@@ -18,7 +18,7 @@ The source ceiling is 180,000 ms. The planner never fits a plan by extending it.
 
 | Pattern observed | Domain problem | Implemented response | Remaining integration |
 | --- | --- | --- | --- |
-| File suffix chooses `go test ./...` | Classification lacks consumer relations | Package imports, test imports, embeds and reverse closure | Compiler command adapters for the six canonical checks |
+| File suffix chooses `go test ./...` | Classification lacks consumer relations | Package imports, test imports, embeds and reverse closure | Generic command adapter implemented; compiler workflow binding remains |
 | Broad changes repeatedly trigger many observer workflows | Execution has no shared work identity or cost boundary | Exact-source start reservation and common deadline | Coordinate existing compiler workflows through one domain plan |
 | Saved command contract differs from the workflow command | Timing origin and operation identity drift | Cost key derives from the executable argument definition and environment/resource profile | Ingest remote clocks only when their operation and measurement extent match |
 | Historical cases pin the current registry count | Current capability and historical cohort identities overlap | Retained compiler source separates current source-selected scopes from historical denominators | Reduce duplicate fixture maintenance using source-owned capability relations |
@@ -44,4 +44,4 @@ These quantities separate scope, prediction and current behavior. File count or 
 
 Use Gooo provenance and explicit input ports to bind currently global fixture inputs to their actual consumers. Observed Go testing reads supply candidate relations. A candidate can support exclusion only after its source and collection extent establish that obligation. Then connect format, vet, race, semantic and policy producers to the same graph and clock. Independent decision models can rank source-permitted schedules with identical obligations.
 
-The reusable Go structs are `Graph`, `Observation`, `Estimate`, `Plan`, `Execution` and `InputOrigin`. The package collector currently adapts Go-test units. Native differential and external observer commands can use the generic work graph once their command extent, input origins and completion clocks are bound. Job names alone do not identify compatible cost contexts.
+The reusable Go structs are `Graph`, `Observation`, `Estimate`, `Plan`, `Execution` and `InputOrigin`. The package collector currently adapts Go-test units. Native differential and external observer commands can use the implemented `work` adapter once their command extent, input origins and completion clocks are bound. Job names alone do not identify compatible cost contexts.

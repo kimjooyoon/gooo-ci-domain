@@ -1,0 +1,4 @@
+=== RUN   TestCommandOriginForecastsNextContent118397
+--- PASS: TestCommandOriginForecastsNextContent118397 (0.28s)
+PASS
+ok  	github.com/kimjooyoon/gooo-ci-domain	1.737s

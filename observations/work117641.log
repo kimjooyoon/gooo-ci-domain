@@ -1,0 +1,6 @@
+=== RUN   TestIndependentUnitsShareDeadline117641
+--- PASS: TestIndependentUnitsShareDeadline117641 (0.24s)
+=== RUN   TestWorkCLIAndStreamingOrigin117641
+--- PASS: TestWorkCLIAndStreamingOrigin117641 (0.11s)
+PASS
+ok  	github.com/kimjooyoon/gooo-ci-domain	1.808s

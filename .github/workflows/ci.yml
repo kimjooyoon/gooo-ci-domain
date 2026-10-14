@@ -37,4 +37,23 @@ jobs:
         run: |
           test "$(go env GOVERSION)" = "go1.27.2"
           test -z "$(gofmt -l .)"
-          go run -p=1 ./cmd/gooo-ci-domain verify --started-at "$CI_SCOPE_STARTED_AT" --budget-ms 180000
+          remaining=$((180 - ($(date +%s) - $(date -d "$CI_SCOPE_STARTED_AT" +%s))))
+          test "$remaining" -gt 0
+          timeout --signal=KILL "${remaining}s" go build -p=1 -o "$RUNNER_TEMP/gooo-ci-domain" ./cmd/gooo-ci-domain
+          "$RUNNER_TEMP/gooo-ci-domain" work \
+            --root "$GITHUB_WORKSPACE" --head HEAD \
+            --unit urn:gooo:ci-domain:domain-conformance \
+            --journal "$RUNNER_TEMP/command-origins.jsonl" \
+            --started-at "$CI_SCOPE_STARTED_AT" --budget-ms 180000 \
+            -- go test -race -mod=readonly -p=1 -count=1 -timeout=180s ./... \
+            > "$RUNNER_TEMP/domain-work-receipt.json"
+      - name: Preserve this original command origin
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: command-origins-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/command-origins.jsonl
+            ${{ runner.temp }}/domain-work-receipt.json
+          if-no-files-found: warn
+          retention-days: 14

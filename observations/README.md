@@ -7,3 +7,5 @@ Each record belongs to its named fresh source cohort. `integration83147` records
 The first and next-source discovery measurements are a two-package fixture demonstrating feedback mechanics. Work forecasts and total scope elapsed time have different denominators. These records establish that the path is implemented; statistical reliability requires further new-source observations.
 
 Generation origins retain source bytes, generated-byte hashes and original receipt hashes. The raw generation receipts remain locally archived.
+
+`work117641` records independent command units sharing a deadline and an interrupted cost. `feedback118397` changes actual command input content before using the preceding cost origin. `active121087` binds tracked working inputs and executable bytes, preserves a logical Git index and admits one of two concurrent attempts. Each original local cohort completed once; the saved durations have these small fixture scopes.

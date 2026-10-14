@@ -3,6 +3,7 @@ package cibudgetdomain
 import (
 	"encoding/json"
 	"os"
+	"regexp"
 	"strings"
 	"testing"
 )
@@ -17,14 +18,29 @@ func TestSourceOwnedPolicyProjection97083(t *testing.T) {
 		SourceSHA                   string `json:"source_sha256"`
 		GeneratedSHA                string `json:"generated_sha256"`
 	}
-	if err = json.Unmarshal(raw, &rows); err != nil || len(rows) != 4 {
+	if err = json.Unmarshal(raw, &rows); err != nil || len(rows) == 0 {
 		t.Fatal(rows, err)
 	}
 	current, err := os.ReadFile("policy.gooo")
 	if err != nil {
 		t.Fatal(err)
 	}
+	declarations := regexp.MustCompile(`(?m)^activity ([A-Za-z_][A-Za-z0-9_]*)\(`).FindAllStringSubmatch(string(current), -1)
+	declared := map[string]bool{}
+	for _, match := range declarations {
+		if declared[match[1]] {
+			t.Fatal("repeated source activity")
+		}
+		declared[match[1]] = true
+	}
+	if len(declared) != len(rows) {
+		t.Fatal("source policy and projection populations differ")
+	}
 	for _, row := range rows {
+		if !declared[row.Activity] {
+			t.Fatal("undeclared or repeated projection", row.Activity)
+		}
+		delete(declared, row.Activity)
 		source, err := os.ReadFile(row.Source)
 		if err != nil || hashBytes(source) != row.SourceSHA {
 			t.Fatal(row.Activity, "source origin differs", err)

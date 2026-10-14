@@ -12,18 +12,6 @@
     "toolchain": "go1.27.2"
   },
   {
-    "activity": "NextStep",
-    "source": "origins/policygen85941.gooo",
-    "source_sha256": "fbae048fc306c4a47867a4d08c02a116a4c8977da69f5c362375215efc71359b",
-    "generated": "next_step_generated.go",
-    "generated_sha256": "db887e136675d11586e397311be82e593116924775c7f6724ff5fc61a5aeb8f6",
-    "raw_generation_receipt_sha256": "dd563ff214675167d9be5e2fe26793dffd8adfa3b9ea4e3904de59a824f89845",
-    "generator_decision": "PASS",
-    "compiler_revision": "9b9c522f354a02c20ee7b6c34f6a8c8104ef7f04",
-    "compiler_repository": "https://github.com/kimjooyoon/meta-ontology-go",
-    "toolchain": "go1.27.2"
-  },
-  {
     "activity": "AdmitDiscovery",
     "source": "origins/policygen85941.gooo",
     "source_sha256": "fbae048fc306c4a47867a4d08c02a116a4c8977da69f5c362375215efc71359b",
@@ -44,6 +32,30 @@
     "raw_generation_receipt_sha256": "f9cd89364ba3afc11061aa9122a3d218e616cbf12dcaf69a3f548abad20c3161",
     "generator_decision": "PASS",
     "compiler_revision": "9b9c522f354a02c20ee7b6c34f6a8c8104ef7f04",
+    "compiler_repository": "https://github.com/kimjooyoon/meta-ontology-go",
+    "toolchain": "go1.27.2"
+  },
+  {
+    "activity": "ClassifyWorkOutcome",
+    "source": "origins/policygen112931.gooo",
+    "source_sha256": "cb98f62e028d65b4090248bf44134798fa5a64552bb5f67342314e354fac010d",
+    "generated": "work_outcome_generated.go",
+    "generated_sha256": "5814dd436123e32ec9745020037aba8be634062925e93fc12da8329a2689ea04",
+    "raw_generation_receipt_sha256": "39fe11b3b3e133023fb57cfca3091e7daa5e14dc90b32b8d5dfa4d84fe033de7",
+    "generator_decision": "PASS",
+    "compiler_revision": "fc968e7d205031947ce50750bdf844523a5bf718",
+    "compiler_repository": "https://github.com/kimjooyoon/meta-ontology-go",
+    "toolchain": "go1.27.2"
+  },
+  {
+    "activity": "NextStep",
+    "source": "origins/policygen112931.gooo",
+    "source_sha256": "cb98f62e028d65b4090248bf44134798fa5a64552bb5f67342314e354fac010d",
+    "generated": "next_step_generated.go",
+    "generated_sha256": "720193598a7f5ca25c2c5067551d4c56a6a9ee396843ac89d4f8850cc68590f5",
+    "raw_generation_receipt_sha256": "2294d23805a7e36e81e46ea162b551e0a1458edb7112ac378062048e427156fe",
+    "generator_decision": "PASS",
+    "compiler_revision": "fc968e7d205031947ce50750bdf844523a5bf718",
     "compiler_repository": "https://github.com/kimjooyoon/meta-ontology-go",
     "toolchain": "go1.27.2"
   }

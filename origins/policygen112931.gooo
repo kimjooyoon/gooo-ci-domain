@@ -1,0 +1,56 @@
+package cibudgetdomain
+namespace cibudgetdomain
+
+entity Integer id "urn:gooo:type:integer"
+entity Boolean id "urn:gooo:type:boolean"
+entity Text id "urn:gooo:type:text"
+
+# work milliseconds, queue/setup/transport milliseconds, requested ceiling,
+# closed impact obligations, available cost observations
+activity AdmitPlan(Integer, Integer, Integer, Boolean, Boolean) -> Text id "urn:gooo:ci-domain:admit-plan" computes `
+if !input3 { return "IMPACT_UNRESOLVED" }
+if !input4 { return "COST_UNRESOLVED" }
+if input2 <= 0 || input2 > 180000 { return "INVALID_DEADLINE" }
+if input0 < 0 || input1 < 0 { return "INVALID_COST" }
+if input1 > input2 { return "OVER_BUDGET" }
+if input0 > input2 - input1 { return "OVER_BUDGET" }
+return "READY"
+`
+
+# The next action remains attached to the observed domain result.
+activity NextStep(Text) -> Text id "urn:gooo:ci-domain:next-step" computes `
+if input == "READY" { return "EXECUTE_SCOPED_PLAN" }
+if input == "IMPACT_UNRESOLVED" { return "RESOLVE_INPUT_ORIGIN" }
+if input == "COST_UNRESOLVED" { return "COLLECT_COST_ORIGIN" }
+if input == "OVER_BUDGET" { return "REFINE_REQUIRED_WORK" }
+if input == "DEADLINE_EXCEEDED" { return "RECALIBRATE_CENSORED_COST" }
+if input == "VERIFY_FAILED" { return "REPAIR_SOURCE" }
+if input == "VERIFIED_SCOPED" { return "RECORD_ORIGIN" }
+if input == "VERIFIED_DISCOVERY" { return "RECORD_ORIGIN" }
+if input == "COMMAND_COMPLETED" { return "RECORD_ORIGIN" }
+return "REPAIR_PLAN_CONTRACT"
+`
+
+# First-seen source can measure a complete test obligation population once.
+# Missing predictions remain explicit, and the same total deadline applies.
+activity AdmitDiscovery(Integer, Integer, Boolean, Boolean) -> Text id "urn:gooo:ci-domain:admit-discovery" computes `
+if !input2 { return "IMPACT_UNRESOLVED" }
+if !input3 { return "SOURCE_ALREADY_OBSERVED" }
+if input0 <= 0 || input0 > 180000 { return "INVALID_DEADLINE" }
+if input1 < 0 { return "INVALID_COST" }
+if input1 >= input0 { return "DEADLINE_EXCEEDED" }
+return "MEASURE_NEW_COHORT"
+`
+
+# Cost reserve policy is source-owned; observations supply its operands.
+activity ReserveCost(Integer, Integer) -> Integer id "urn:gooo:ci-domain:reserve-cost" computes `
+return input0 + input1
+`
+
+# A command outcome owns one exact command scope.
+activity ClassifyWorkOutcome(Boolean, Integer, Boolean) -> Text id "urn:gooo:ci-domain:classify-work-outcome" computes `
+if input0 { return "DEADLINE_EXCEEDED" }
+if !input2 { return "ORIGIN_UNAVAILABLE" }
+if input1 != 0 { return "VERIFY_FAILED" }
+return "COMMAND_COMPLETED"
+`
