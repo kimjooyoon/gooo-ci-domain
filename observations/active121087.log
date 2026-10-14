@@ -1,0 +1,6 @@
+=== RUN   TestActiveInputsAndExecutableOrigins121087
+--- PASS: TestActiveInputsAndExecutableOrigins121087 (0.61s)
+=== RUN   TestLogicalIndexAndConcurrentReservation121087
+--- PASS: TestLogicalIndexAndConcurrentReservation121087 (0.17s)
+PASS
+ok  	github.com/kimjooyoon/gooo-ci-domain	2.262s

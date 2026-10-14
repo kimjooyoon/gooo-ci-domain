@@ -27,6 +27,9 @@ func NextStep(input string) string {
 	if input == "VERIFIED_DISCOVERY" {
 		return "RECORD_ORIGIN"
 	}
+	if input == "COMMAND_COMPLETED" {
+		return "RECORD_ORIGIN"
+	}
 	return "REPAIR_PLAN_CONTRACT"
 
 }
