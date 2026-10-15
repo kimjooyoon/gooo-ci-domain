@@ -56,7 +56,7 @@ func TestAutomaticCostDiscoveryAndNextSource88123(t *testing.T) {
 		}
 	}
 	t.Logf("next source: forecast_work_ms=%d; observed scope_ms=%d; required_packages=%d", *second.Plan.ForecastWorkMS, second.ScopeElapsedMS, len(second.Plan.RequiredTests))
-	for _, values := range [][4]int64{{180001, 0, 1, 1}, {180000, 180000, 1, 1}, {180000, 0, 0, 1}, {180000, 0, 1, 0}} {
+	for _, values := range [][4]int64{{9223372036855, 0, 1, 1}, {180000, 180000, 1, 1}, {180000, 0, 0, 1}, {180000, 0, 1, 0}} {
 		if AdmitDiscovery(values[0], values[1], values[2] == 1, values[3] == 1) == "MEASURE_NEW_COHORT" {
 			t.Fatal("invalid discovery admitted", values)
 		}

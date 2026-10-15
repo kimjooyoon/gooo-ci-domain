@@ -12,7 +12,7 @@ Scope time is queue + setup + collection/planning + controlled execution + compl
 
 Under the calibrated unit costs, a plan is bounded below by its longest dependency chain and serial work divided by available workers. These are conditional forecast bounds. Future execution times remain observations. A chain whose estimated cost exceeds the budget requires a change in the work structure. Increasing parallel capacity keeps the same required population.
 
-The source ceiling is 180,000 ms. The planner never fits a plan by extending it. An incomplete scope, absent context or timed-out context remains visible. First-seen cost discovery has a source-owned permission and the same total deadline. It yields current verification only when every required command actually completes successfully in that scope.
+The default target is 180,000 ms. An explicit request can declare another ceiling. The planner never extends that request to fit its estimated work. An incomplete scope, absent context or timed-out context remains visible. First-seen cost discovery has a source-owned permission and the same total deadline. It yields current verification only when every required command actually completes successfully in that scope.
 
 ## Inefficient development patterns and current responses
 
