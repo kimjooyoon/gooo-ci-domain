@@ -10,7 +10,7 @@ entity Text id "urn:gooo:type:text"
 activity AdmitPlan(Integer, Integer, Integer, Boolean, Boolean) -> Text id "urn:gooo:ci-domain:admit-plan" computes `
 if !input3 { return "IMPACT_UNRESOLVED" }
 if !input4 { return "COST_UNRESOLVED" }
-if input2 <= 0 || input2 > 180000 { return "INVALID_DEADLINE" }
+if input2 <= 0 || input2 > 9223372036854 { return "INVALID_DEADLINE" }
 if input0 < 0 || input1 < 0 { return "INVALID_COST" }
 if input1 > input2 { return "OVER_BUDGET" }
 if input0 > input2 - input1 { return "OVER_BUDGET" }
@@ -36,7 +36,7 @@ return "REPAIR_PLAN_CONTRACT"
 activity AdmitDiscovery(Integer, Integer, Boolean, Boolean) -> Text id "urn:gooo:ci-domain:admit-discovery" computes `
 if !input2 { return "IMPACT_UNRESOLVED" }
 if !input3 { return "SOURCE_ALREADY_OBSERVED" }
-if input0 <= 0 || input0 > 180000 { return "INVALID_DEADLINE" }
+if input0 <= 0 || input0 > 9223372036854 { return "INVALID_DEADLINE" }
 if input1 < 0 { return "INVALID_COST" }
 if input1 >= input0 { return "DEADLINE_EXCEEDED" }
 return "MEASURE_NEW_COHORT"

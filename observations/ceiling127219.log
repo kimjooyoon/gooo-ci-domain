@@ -1,0 +1,4 @@
+=== RUN   TestExplicitRequestedCeiling127219
+--- PASS: TestExplicitRequestedCeiling127219 (0.00s)
+PASS
+ok  	github.com/kimjooyoon/gooo-ci-domain	1.451s

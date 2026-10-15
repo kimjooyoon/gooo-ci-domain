@@ -35,7 +35,7 @@ gooo-ci-domain improve --root /path/to/repository --base BASE_COMMIT
 gooo-ci-domain check --root /path/to/repository --base BASE_COMMIT
 ```
 
-The default total ceiling is 180,000 ms. `--budget-ms` can request a smaller ceiling. `--workers` selects available capacity and participates in the timing profile; costs from a different capacity have distinct keys. `--started-at` binds CI queue and setup time to the same clock. The [workflow](.github/workflows/ci.yml) supplies the original run creation time automatically. An input snapshot retains its scope start instead of resetting it on reuse.
+The default total ceiling is 180,000 ms. `--budget-ms` declares an explicit ceiling for the current domain request. `--workers` selects available capacity and participates in the timing profile; costs from a different capacity have distinct keys. `--started-at` binds CI queue and setup time to the same clock. The [workflow](.github/workflows/ci.yml) supplies the original run creation time automatically. An input snapshot retains its scope start instead of resetting it on reuse.
 
 Origins default to an external system cache, outside the source checkout. A custom journal uses `--journal`. Limits are 4 MiB, 4,096 records and 256 observations per cost context. A full journal produces an explicit error; it is never silently truncated. Unit output and read-origin populations are also bounded. No model weights or token-generation service are required.
 

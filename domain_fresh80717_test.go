@@ -66,7 +66,7 @@ func TestBudgetAndParallelResources80717(t *testing.T) {
 			t.Fatal("resource choice changed completeness", workers, plan, err)
 		}
 	}
-	for _, values := range [][3]int64{{0, 0, 180001}, {math.MaxInt64, 1, 180000}, {0, -1, 180000}, {0, 180001, 180000}} {
+	for _, values := range [][3]int64{{0, 0, math.MaxInt64}, {math.MaxInt64, 1, 180000}, {0, -1, 180000}, {0, 180001, 180000}} {
 		if AdmitPlan(values[0], values[1], values[2], true, true) == "READY" {
 			t.Fatal("deadline or cost arithmetic admitted invalid plan", values)
 		}

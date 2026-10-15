@@ -9,7 +9,7 @@ func AdmitDiscovery(input0 int64, input1 int64, input2 bool, input3 bool) string
 	if !input3 {
 		return "SOURCE_ALREADY_OBSERVED"
 	}
-	if input0 <= 0 || input0 > 180000 {
+	if input0 <= 0 || input0 > 9223372036854 {
 		return "INVALID_DEADLINE"
 	}
 	if input1 < 0 {

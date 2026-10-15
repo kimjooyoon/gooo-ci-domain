@@ -46,9 +46,9 @@ completed cost sample.
 
 ## Common clock
 
-All commands receive the original workflow creation time. Queue, setup and
+All commands receive the original workflow creation time and the same explicit request ceiling. Queue, setup and
 earlier stages consume this scope. Each command has only the remaining time;
-the next command cannot receive another three minutes. Process cancellation
+the next command cannot reset its request clock. Process cancellation
 covers the command's process group, including ordinary child compilers.
 
 GitHub queue scheduling, action steps and artifact transport remain external

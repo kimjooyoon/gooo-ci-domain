@@ -1,0 +1,9 @@
+{
+  "cohort": "ceiling127219",
+  "scope": "explicit requested ceiling and original clock",
+  "original_local_execution": true,
+  "local_reruns": 0,
+  "exit_code": 0,
+  "wall_seconds": 2.186173915863037,
+  "producer_manifest_sha256": "4e4267d53c51344991a714ff07aa54e668def2165a758155851c2c6254a69af1"
+}
