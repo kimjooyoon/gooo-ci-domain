@@ -36,7 +36,12 @@ jobs:
       - name: Verify source projections and domain behavior
         run: |
           test "$(go env GOVERSION)" = "go1.27.2"
-          test -z "$(gofmt -l .)"
+          unformatted="$(gofmt -l .)"
+          if test -n "$unformatted"; then
+            printf '%s\n' "$unformatted" >&2
+            gofmt -d .
+            exit 1
+          fi
           remaining=$((180 - ($(date +%s) - $(date -d "$CI_SCOPE_STARTED_AT" +%s))))
           test "$remaining" -gt 0
           timeout --signal=KILL "${remaining}s" go build -p=1 -o "$RUNNER_TEMP/gooo-ci-domain" ./cmd/gooo-ci-domain

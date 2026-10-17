@@ -1,7 +1,7 @@
 # Source-bound command work
 
 `work` adapts a real command to the same time domain as the package planner.
-It records one command's completion. The caller owns the required command
+It records one command's outcome. The caller owns the required command
 population and its prerequisites.
 
 ```sh
@@ -63,3 +63,16 @@ exact command exited successfully and its output origin was available.
 `VERIFY_FAILED` requests source repair; `DEADLINE_EXCEEDED` preserves unfinished
 work and calls for recalibration. A command receipt does not authorize a compiler
 release; that requires its complete current canonical check population and proof.
+
+The CLI can return a nonzero status with a JSON receipt. Receipt fields describe
+the observed command outcome; the CLI status also covers record persistence and
+receipt output. Preserve the original CLI status and diagnostic log alongside
+the receipt. A retained `COMMAND_COMPLETED` result can accompany a failure to
+store its final observation. Use the combined result to decide the next action;
+receipt presence alone provides no permission to repeat the command.
+
+An outcome observation can also record failure to start a process, with
+`ORIGIN_UNAVAILABLE` and `Completed=false`. Errors returned before an outcome
+observation exists keep the existing empty-stdout path. Normal admission refusals
+still emit their existing JSON and nonzero status. Failed receipt delivery can
+leave partial stdout; preserve the error and treat those bytes as incomplete.
