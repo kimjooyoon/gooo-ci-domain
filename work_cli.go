@@ -2,7 +2,6 @@ package cibudgetdomain
 
 import (
 	"context"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -54,14 +53,5 @@ func MainWork(args []string, stdout, stderr io.Writer) int {
 		}
 	}
 	result, err := RunWorkWithOutput(ctx, *root, *journal, spec, start, *budget, stderr)
-	if err != nil {
-		return fail(err)
-	}
-	if err = json.NewEncoder(stdout).Encode(result); err != nil {
-		return fail(err)
-	}
-	if result.Decision != "COMMAND_COMPLETED" {
-		return 1
-	}
-	return 0
+	return writeWorkResult(stdout, stderr, result, err)
 }
