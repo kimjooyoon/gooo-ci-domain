@@ -35,7 +35,7 @@ gooo-ci-domain improve --root /path/to/repository --base BASE_COMMIT
 gooo-ci-domain check --root /path/to/repository --base BASE_COMMIT
 ```
 
-The default total ceiling is 180,000 ms. `--budget-ms` declares an explicit ceiling for the current domain request. `--workers` selects available capacity and participates in the timing profile; costs from a different capacity have distinct keys. `--started-at` binds CI queue and setup time to the same clock. The [workflow](.github/workflows/ci.yml) supplies the original run creation time automatically. An input snapshot retains its scope start instead of resetting it on reuse.
+The default total ceiling is 180,000 ms. `--budget-ms` declares an explicit ceiling for the current domain request. `--workers` selects available capacity and participates in the timing profile; costs from a different capacity have distinct keys. `--started-at` binds commands to one scope clock. The [workflow](.github/workflows/ci.yml) records the original run and starts its work scope at the first runner step, before checkout and setup. An input snapshot retains its scope start instead of resetting it on reuse.
 
 Origins default to an external system cache, outside the source checkout. A custom journal uses `--journal`. Limits are 4 MiB, 4,096 records and 256 observations per cost context. A full journal produces an explicit error; it is never silently truncated. Unit output and read-origin populations are also bounded. No model weights or token-generation service are required.
 
@@ -53,7 +53,7 @@ A read-only compiler preflight at the [recorded revisions](observations/compiler
 
 Fresh local cohorts exercised automatic discovery, a later functional source using its costs, implicit input reads, source reservation, cancellation, censored costs and scope preservation. A 400-input/512-package fixture retained all 512 obligations with 2,448 graph edges. These are small implementation observations; forecast reliability across real changes is an ongoing measurement.
 
-The repository CI has a three-minute job ceiling and passes its run creation clock to the executor. GitHub controls queue scheduling; total remote completion within three minutes depends on that scheduling and artifact transport. The tool exposes those boundaries. The compiler's complete end-to-end CI budget is still being developed.
+The repository CI has a three-minute job ceiling and admitted-work budget, including checkout, setup, compilation and checks. GitHub controls initial queue scheduling. The original run JSON and the work-start timestamp are retained together, including when checks never start. Initial waiting remains visible in the run's total elapsed time and the job summary. This budget does not promise three-minute remote completion including queue and artifact transport. The compiler's complete end-to-end CI budget is still being developed.
 
 ## Research connections
 

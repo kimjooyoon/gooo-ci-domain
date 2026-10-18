@@ -8,7 +8,14 @@ The physical graph is a projection of those relations. Global input relations ar
 
 ## Time model
 
-Scope time is queue + setup + collection/planning + controlled execution + completion/transport. Already elapsed time is measured at this invocation. Rebinding/completion reserve and unit work costs use matching prior origins. The current CLI controls collection commands, package execution and child-process cancellation. GitHub scheduling and external artifact transport have separate control boundaries. Filesystem completion and operating-system scheduling can also affect observed lateness.
+Remote end-to-end time includes queue, setup, collection/planning, controlled execution and completion/transport. A declared scope measures elapsed time from its caller-owned start. Rebinding/completion reserve and unit work costs use matching prior origins. The current CLI controls collection commands, package execution and child-process cancellation. GitHub scheduling and external artifact transport have separate control boundaries. Filesystem completion and operating-system scheduling can also affect observed lateness.
+
+The scope boundary is an explicit caller input. This repository now keeps the
+outer workflow creation clock alongside an admitted-work clock set before
+checkout/setup. Its 180-second execution budget begins at admission; waiting
+inside that scope still consumes it. Initial GitHub waiting remains in the outer
+record and does not acquire a successful verification outcome. This separates an
+externally scheduled queue from the work whose remaining time the tool controls.
 
 Under the calibrated unit costs, a plan is bounded below by its longest dependency chain and serial work divided by available workers. These are conditional forecast bounds. Future execution times remain observations. A chain whose estimated cost exceeds the budget requires a change in the work structure. Increasing parallel capacity keeps the same required population.
 

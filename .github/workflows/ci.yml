@@ -20,12 +20,28 @@ jobs:
       GOWORK: off
       GOMAXPROCS: 2
     steps:
-      - name: Bind the original run clock
+      - name: Bind original run and admitted work clocks
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          run_started_at="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" --jq .created_at)"
-          printf 'CI_SCOPE_STARTED_AT=%s\n' "$run_started_at" >> "$GITHUB_ENV"
+          admitted_started_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          printf '%s\n' "$admitted_started_at" > "$RUNNER_TEMP/work-started-at.txt"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" > "$RUNNER_TEMP/workflow-run.json"
+          jq -e --arg run "$GITHUB_RUN_ID" --arg attempt "$GITHUB_RUN_ATTEMPT" \
+            '(.id | tostring) == $run and (.run_attempt | tostring) == $attempt and
+             (.created_at | test("^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"))' \
+            "$RUNNER_TEMP/workflow-run.json" > /dev/null
+          workflow_created_at="$(jq -r .created_at "$RUNNER_TEMP/workflow-run.json")"
+          admitted_seconds="$(date -d "$admitted_started_at" +%s)"
+          created_seconds="$(date -d "$workflow_created_at" +%s)"
+          elapsed_before_admission=$((admitted_seconds - created_seconds))
+          test "$elapsed_before_admission" -ge 0
+          {
+            printf 'CI_SCOPE_STARTED_AT=%s\n' "$admitted_started_at"
+            printf 'CI_WORKFLOW_CREATED_AT=%s\n' "$workflow_created_at"
+          } >> "$GITHUB_ENV"
+          printf 'Elapsed before work admission: %s seconds. Admitted work budget: 180 seconds.\n' \
+            "$elapsed_before_admission" >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
@@ -60,5 +76,7 @@ jobs:
           path: |
             ${{ runner.temp }}/command-origins.jsonl
             ${{ runner.temp }}/domain-work-receipt.json
+            ${{ runner.temp }}/workflow-run.json
+            ${{ runner.temp }}/work-started-at.txt
           if-no-files-found: warn
           retention-days: 14

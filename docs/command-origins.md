@@ -46,10 +46,25 @@ completed cost sample.
 
 ## Common clock
 
-All commands receive the original workflow creation time and the same explicit request ceiling. Queue, setup and
-earlier stages consume this scope. Each command has only the remaining time;
+All commands receive the same caller-declared scope start and explicit request
+ceiling. Setup, earlier stages and any waiting after that start consume this
+scope. Each command has only the remaining time;
 the next command cannot reset its request clock. Process cancellation
 covers the command's process group, including ordinary child compilers.
+
+This repository's CI starts admitted work in its first runner step, before
+checkout or setup. Its artifact retains the original GitHub API response in
+`workflow-run.json` and the admitted start in `work-started-at.txt`. Run ID and
+attempt must match the current job, and the observed start cannot precede run
+creation. The 180-second work budget and race-test command are unchanged. A
+caller that owns an end-to-end deadline can instead supply run creation as its
+scope start; in that case initial queue time consumes the declared budget too.
+
+The original [PR #5 run](https://github.com/kimjooyoon/gooo-ci-domain/actions/runs/39087360703)
+used run creation as the scope start. It waited 327 seconds for a runner and
+failed 12 seconds after job start, before building or executing tests. This
+failure is retained. The revised scope makes the controlled work budget explicit
+while keeping initial waiting in the original remote elapsed-time record.
 
 GitHub queue scheduling, action steps and artifact transport remain external
 boundaries. Job timeouts bound active jobs; the runner's clock bounds admitted
@@ -76,3 +91,13 @@ An outcome observation can also record failure to start a process, with
 observation exists keep the existing empty-stdout path. Normal admission refusals
 still emit their existing JSON and nonzero status. Failed receipt delivery can
 leave partial stdout; preserve the error and treat those bytes as incomplete.
+
+Non-successful domain results also emit one diagnostic line to stderr. It carries
+the existing decision, admission, next operation, predicted cost (or `unknown`),
+scope/deadline/unit milliseconds, completion flag and command exit code. These
+values come from the same receipt; the display adds no policy decision or clock.
+For example, `OVER_BUDGET` with `REFINE_REQUIRED_WORK` identifies an admission
+refusal before a command observation. A started command may instead produce
+`VERIFY_FAILED` or `DEADLINE_EXCEEDED`. The complete receipt retains that distinction
+and its origins. The diagnostic omits command arguments, source paths and output.
+Successful commands keep their existing log stream without an added summary.
