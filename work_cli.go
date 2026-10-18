@@ -18,7 +18,7 @@ func MainWork(args []string, stdout, stderr io.Writer) int {
 	journal := flags.String("journal", "", "external append-only timing journal")
 	origin := flags.String("workspace-origin", "", "optional materialization origin file")
 	budget := flags.Int64("budget-ms", 180000, "total ceiling")
-	started := flags.String("started-at", "", "original workflow creation clock")
+	started := flags.String("started-at", "", "shared scope start clock (RFC3339)")
 	if err := flags.Parse(args); err != nil || flags.NArg() == 0 {
 		return 2
 	}
