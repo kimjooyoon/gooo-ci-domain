@@ -49,9 +49,12 @@ func TestWriteWorkResultRetainsObservedOutcome(t *testing.T) {
 			if err != nil || !reflect.DeepEqual(decoded, result) {
 				t.Fatal("observed result was lost or rewritten", decoded, err)
 			}
-			if tc.runErr == nil && stderr.Len() != 0 ||
+			if tc.runErr == nil && tc.decision == "COMMAND_COMPLETED" && stderr.Len() != 0 ||
 				tc.runErr != nil && !strings.Contains(stderr.String(), tc.runErr.Error()) {
 				t.Fatal("original persistence cause was lost", stderr.String())
+			}
+			if tc.decision != "COMMAND_COMPLETED" && !strings.Contains(stderr.String(), `decision="`+tc.decision+`"`) {
+				t.Fatal("observed outcome missing from diagnostic", stderr.String())
 			}
 		})
 	}
@@ -66,7 +69,8 @@ func TestWriteWorkResultPreservesPreExecutionBehavior(t *testing.T) {
 	}
 	stderr.Reset()
 	result.Decision = "OVER_BUDGET"
-	if status := writeWorkResult(&stdout, &stderr, result, nil); status != 1 || stderr.Len() != 0 {
+	if status := writeWorkResult(&stdout, &stderr, result, nil); status != 1 ||
+		!strings.Contains(stderr.String(), `decision="OVER_BUDGET"`) {
 		t.Fatal("admission refusal status changed", status, stderr.String())
 	}
 	var decoded WorkReceipt

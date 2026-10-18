@@ -76,3 +76,13 @@ An outcome observation can also record failure to start a process, with
 observation exists keep the existing empty-stdout path. Normal admission refusals
 still emit their existing JSON and nonzero status. Failed receipt delivery can
 leave partial stdout; preserve the error and treat those bytes as incomplete.
+
+Non-successful domain results also emit one diagnostic line to stderr. It carries
+the existing decision, admission, next operation, predicted cost (or `unknown`),
+scope/deadline/unit milliseconds, completion flag and command exit code. These
+values come from the same receipt; the display adds no policy decision or clock.
+For example, `OVER_BUDGET` with `REFINE_REQUIRED_WORK` identifies an admission
+refusal before a command observation. A started command may instead produce
+`VERIFY_FAILED` or `DEADLINE_EXCEEDED`. The complete receipt retains that distinction
+and its origins. The diagnostic omits command arguments, source paths and output.
+Successful commands keep their existing log stream without an added summary.
