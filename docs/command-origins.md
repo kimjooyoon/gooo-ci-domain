@@ -7,6 +7,7 @@ population and its prerequisites.
 ```sh
 gooo-ci-domain work --root /path/to/repository \
   --head EXACT_COMMIT --unit urn:project:ci:vet \
+  --execution-id "$CI_RUN_ID/$CI_RUN_ATTEMPT" \
   --started-at "$CI_SCOPE_STARTED_AT" --budget-ms 180000 \
   --journal /outside/checkout/command-origins.jsonl \
   -- go vet ./...
@@ -38,11 +39,15 @@ directory match. A different runner checkout path creates a different context.
 This conservative identity currently reduces cross-host reuse. Predictions are
 empirical rather than proportional to changed lines.
 
-A first-seen command can run once within the remaining budget and records an
-unavailable forecast. A later source can use its completed cost observations.
-An atomic start reservation prevents two callers from running the same source
-tree and command context. A timeout is censored, and cannot become a successful
-completed cost sample.
+A first-seen command can run within the remaining budget and records an
+unavailable forecast. A later execution can use its completed cost observations.
+`--execution-id` identifies the current run and attempt, separate from the
+reusable cost key. The same source command can run again in a new execution
+after restoring a historical cost journal. A repeat within one execution is
+refused, including when its earlier start was reserved but not completed.
+Omitting the flag retains the original single-origin behavior. The ID is
+recorded in the command receipt and journal; it does not alter the cost key.
+A timeout is censored and cannot become a successful completed cost sample.
 
 ## Common clock
 

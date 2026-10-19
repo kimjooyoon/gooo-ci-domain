@@ -14,6 +14,7 @@ func MainWork(args []string, stdout, stderr io.Writer) int {
 	flags.SetOutput(stderr)
 	root := flags.String("root", ".", "active working directory")
 	id := flags.String("unit", "", "source-owned work identity")
+	executionID := flags.String("execution-id", "", "current execution identity, distinct from the reusable cost cohort")
 	head := flags.String("head", "HEAD", "exact source head")
 	journal := flags.String("journal", "", "external append-only timing journal")
 	origin := flags.String("workspace-origin", "", "optional materialization origin file")
@@ -42,7 +43,7 @@ func MainWork(args []string, stdout, stderr io.Writer) int {
 	if err != nil {
 		return fail(err)
 	}
-	spec, err := ObserveWork(ctx, *root, *id, *head, workspace, flags.Args())
+	spec, err := ObserveWorkWithExecutionID(ctx, *root, *id, *head, workspace, *executionID, flags.Args())
 	if err != nil {
 		return fail(err)
 	}
