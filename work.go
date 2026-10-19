@@ -20,6 +20,7 @@ import (
 type WorkSpec struct {
 	WorkingDirectory                                                                    string
 	ID, SourceHead, SourceTree, PolicyDigest, WorkspaceOrigin, Profile, CostKey, Digest string
+	ExecutionID                                                                         string
 	Argv                                                                                []string
 	Executable, ExecutableDigest                                                        string
 }
@@ -37,6 +38,13 @@ type WorkReceipt struct {
 }
 
 func ObserveWork(ctx context.Context, root, id, head, workspaceOrigin string, argv []string) (WorkSpec, error) {
+	return ObserveWorkWithExecutionID(ctx, root, id, head, workspaceOrigin, "", argv)
+}
+
+// ObserveWorkWithExecutionID separates the current execution from reusable
+// source and cost cohorts. An empty ID retains the original single-origin rule.
+func ObserveWorkWithExecutionID(ctx context.Context, root, id, head, workspaceOrigin,
+	executionID string, argv []string) (WorkSpec, error) {
 	absolute, err := filepath.Abs(root)
 	if err != nil {
 		return WorkSpec{}, err
@@ -45,8 +53,10 @@ func ObserveWork(ctx context.Context, root, id, head, workspaceOrigin string, ar
 	if err != nil {
 		return WorkSpec{}, err
 	}
-	result := WorkSpec{WorkingDirectory: hashBytes([]byte(absolute)), ID: id, Argv: append([]string(nil), argv...), WorkspaceOrigin: workspaceOrigin, PolicyDigest: SourcePolicyDigest()}
-	if id == "" || len(id) > 1024 || len(argv) == 0 || len(argv) > 128 {
+	result := WorkSpec{WorkingDirectory: hashBytes([]byte(absolute)), ID: id, Argv: append([]string(nil), argv...),
+		WorkspaceOrigin: workspaceOrigin, ExecutionID: executionID, PolicyDigest: SourcePolicyDigest()}
+	if id == "" || len(id) > 1024 || len(executionID) > 128 ||
+		strings.ContainsAny(executionID, "\r\n\x00") || len(argv) == 0 || len(argv) > 128 {
 		return result, fmt.Errorf("work identity and exact argument population are required")
 	}
 	argumentBytes := 0
@@ -128,7 +138,8 @@ func RunWorkWithOutput(ctx context.Context, root, journal string, spec WorkSpec,
 	}
 	novel := true
 	for _, old := range history {
-		if old.Unit == spec.ID && old.SourceTree == spec.SourceTree && old.Profile == spec.Profile && (old.CostKey == spec.CostKey || old.CostKey == "reservation:"+spec.CostKey) {
+		if old.Unit == spec.ID && old.SourceTree == spec.SourceTree && old.Profile == spec.Profile &&
+			old.ExecutionID == spec.ExecutionID && (old.CostKey == spec.CostKey || old.CostKey == "reservation:"+spec.CostKey) {
 			novel = false
 		}
 	}
@@ -151,13 +162,16 @@ func RunWorkWithOutput(ctx context.Context, root, journal string, spec WorkSpec,
 		result.ScopeElapsedMS = prefix
 		return result, nil
 	}
-	reservation := Observation{ID: hashBytes([]byte(spec.SourceTree+":"+spec.CostKey)) + "/start", CostKey: spec.CostKey, SourceDigest: spec.Digest, SourceTree: spec.SourceTree, Profile: spec.Profile, Unit: spec.ID, Outcome: "STARTED", PredictionState: "unavailable"}
+	reservation := Observation{ID: hashBytes([]byte(spec.SourceTree+":"+spec.CostKey+":"+spec.ExecutionID)) + "/start",
+		CostKey: spec.CostKey, SourceDigest: spec.Digest, SourceTree: spec.SourceTree, Profile: spec.Profile,
+		Unit: spec.ID, ExecutionID: spec.ExecutionID, Outcome: "STARTED", PredictionState: "unavailable"}
 	// A reservation is an execution identity, not a zero-time command cost sample.
 	reservation.CostKey = "reservation:" + spec.CostKey
 	if err = AppendObservations(journal, []Observation{reservation}); err != nil {
 		return result, err
 	}
-	fresh, err := ObserveWork(ctx, root, spec.ID, spec.SourceHead, spec.WorkspaceOrigin, spec.Argv)
+	fresh, err := ObserveWorkWithExecutionID(ctx, root, spec.ID, spec.SourceHead,
+		spec.WorkspaceOrigin, spec.ExecutionID, spec.Argv)
 	if err != nil || fresh.Digest != spec.Digest {
 		return result, fmt.Errorf("source or command context changed before execution")
 	}
@@ -189,7 +203,9 @@ func RunWorkWithOutput(ctx context.Context, root, journal string, spec WorkSpec,
 	}
 	result.Decision = ClassifyWorkOutcome(ctx.Err() != nil, int64(result.ExitCode), captured && command.Process != nil)
 	result.NextOperation = NextStep(result.Decision)
-	observation := Observation{ID: spec.Digest + "/end/" + strconv.FormatInt(begin.UnixNano(), 10), CostKey: spec.CostKey, SourceDigest: spec.Digest, SourceTree: spec.SourceTree, Profile: spec.Profile, Unit: spec.ID, Outcome: result.Decision,
+	observation := Observation{ID: spec.Digest + "/end/" + strconv.FormatInt(begin.UnixNano(), 10),
+		CostKey: spec.CostKey, SourceDigest: spec.Digest, SourceTree: spec.SourceTree, Profile: spec.Profile,
+		Unit: spec.ID, ExecutionID: spec.ExecutionID, Outcome: result.Decision,
 		ElapsedMS: result.UnitElapsedMS, ResolutionMS: 1, Completed: result.Completed, OutputDigest: result.OutputDigest, PredictionState: "unavailable"}
 	if known {
 		observation.PredictionState = "empirical"

@@ -17,6 +17,7 @@ type Graph struct {
 type Observation struct {
 	ID, CostKey                 string
 	SourceDigest, Unit, Outcome string
+	ExecutionID                 string
 	PredictionState             string
 	SourceTree, Profile         string
 	InputOrigins                []InputOrigin
