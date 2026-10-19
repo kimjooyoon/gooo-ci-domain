@@ -13,7 +13,7 @@ A one-line change can reach many packages. The plan follows those relationships 
 - Report serial work, critical path and worker-capacity lower bounds under the estimated costs.
 - Execute each required package once, with a common deadline and process-group cancellation covering child compilers.
 - Observe Go testing's `os` input log, tying reads of `.gooo` fixtures to their consuming package.
-- Persist a start origin before execution and append bounded cost origins afterwards. Historical source cohorts are rejected for another execution.
+- Persist a start origin before execution and append bounded cost origins afterwards. The package planner reserves its source cohort; the `work` adapter distinguishes current run/attempt identity from reusable historical command costs.
 
 The current collector covers **host-module tracked-source Go-test obligations**. Compiler canonical checks, workflow orchestration, external services and other target architectures have their own obligations. The existing compiler CI remains separate. Runtime read observations are a bounded description of the Go testing `os` hook; subprocess and direct-syscall inputs require additional origins before they can support finer selection.
 
@@ -39,7 +39,7 @@ The default total ceiling is 180,000 ms. `--budget-ms` declares an explicit ceil
 
 Origins default to an external system cache, outside the source checkout. A custom journal uses `--journal`. Limits are 4 MiB, 4,096 records and 256 observations per cost context. A full journal produces an explicit error; it is never silently truncated. Unit output and read-origin populations are also bounded. No model weights or token-generation service are required.
 
-For existing workflow commands, use the [source-bound `work` adapter](docs/command-origins.md). Each command keeps the same original scope clock and supplies an execution origin.
+For existing workflow commands, use the [source-bound `work` adapter](docs/command-origins.md). Each command keeps the same original scope clock and supplies an execution origin. Pass a run/attempt as `--execution-id` when a workflow may verify the same source again: prior costs can inform its forecast, while only this execution's outcome verifies the current run. Repeating a command within one execution is refused.
 
 ## Self improvement
 
