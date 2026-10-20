@@ -13,7 +13,7 @@ import (
 func workRepository117641(t *testing.T) string {
 	t.Helper()
 	root := t.TempDir()
-	write83147(t, root, "go.mod", "module work117641.example/domain\n\ngo 1.27.2\n")
+	write83147(t, root, "go.mod", "module work117641.example/domain\n\ngo 1.27.3\n")
 	write83147(t, root, "source.go", "package work117641\nconst Value=83\n")
 	git83147(t, root, "init", "-q")
 	git83147(t, root, "add", ".")

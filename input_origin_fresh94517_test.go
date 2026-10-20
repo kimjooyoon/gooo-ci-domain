@@ -8,7 +8,7 @@ import (
 
 func TestRuntimeGoooInputOrigin94517(t *testing.T) {
 	root := t.TempDir()
-	write83147(t, root, "go.mod", "module source94517.example/gooo\n\ngo 1.27.2\n")
+	write83147(t, root, "go.mod", "module source94517.example/gooo\n\ngo 1.27.3\n")
 	write83147(t, root, "source.go", "package source94517\nfunc Revision() int {return 19}\n")
 	write83147(t, root, "policy.gooo", "activity Evaluate(Integer) -> Integer computes `return 19`\n")
 	write83147(t, root, "source_test.go", "package source94517\nimport(\"testing\";\"os\";\"strings\")\nfunc TestSource94517(t *testing.T){source,err:=os.ReadFile(\"policy.gooo\");if err!=nil||!strings.Contains(string(source),\"return 23\"){t.Fatal(err,string(source))}}\n")

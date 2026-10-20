@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     env:
-      GOTOOLCHAIN: go1.27.2
+      GOTOOLCHAIN: go1.27.3
       GOWORK: off
       GOMAXPROCS: 2
     steps:
@@ -47,11 +47,11 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-go@v7
         with:
-          go-version: 1.27.2
+          go-version: 1.27.3
           cache: false
       - name: Verify source projections and domain behavior
         run: |
-          test "$(go env GOVERSION)" = "go1.27.2"
+          test "$(go env GOVERSION)" = "go1.27.3"
           unformatted="$(gofmt -l .)"
           if test -n "$unformatted"; then
             printf '%s\n' "$unformatted" >&2

@@ -8,7 +8,7 @@ import (
 
 func TestAutomaticCostDiscoveryAndNextSource88123(t *testing.T) {
 	root := t.TempDir()
-	write83147(t, root, "go.mod", "module discovery88123.example/g\n\ngo 1.27.2\n")
+	write83147(t, root, "go.mod", "module discovery88123.example/g\n\ngo 1.27.3\n")
 	write83147(t, root, "core/core.go", "package core\nfunc Value() int { return 31 }\n")
 	write83147(t, root, "adapter/adapter.go", "package adapter\nimport \"discovery88123.example/g/core\"\nfunc Value() int {return core.Value()+7}\n")
 	write83147(t, root, "adapter/adapter_test.go", "package adapter\nimport \"testing\"\nfunc TestAdapt88123(t *testing.T){if Value()!=50{t.Fatal(Value())}}\n")
