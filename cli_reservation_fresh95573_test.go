@@ -10,7 +10,7 @@ import (
 
 func TestCLIReservesSourceBeforeAutomaticExecution95573(t *testing.T) {
 	root := t.TempDir()
-	write83147(t, root, "go.mod", "module cohort95573.example/g\n\ngo 1.27.2\n")
+	write83147(t, root, "go.mod", "module cohort95573.example/g\n\ngo 1.27.3\n")
 	write83147(t, root, "source.go", "package cohort95573\nfunc Value() int {return 61}\n")
 	write83147(t, root, "source_test.go", "package cohort95573\nimport \"testing\"\nfunc TestValue95573(t *testing.T){if Value()!=71{t.Fatal(Value())}}\n")
 	git83147(t, root, "init", "-q")

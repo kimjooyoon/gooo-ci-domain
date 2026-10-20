@@ -19,7 +19,7 @@ The current collector covers **host-module tracked-source Go-test obligations**.
 
 ## Use
 
-Requires Go 1.27.2 on Linux or macOS. The module uses the standard library.
+Requires Go 1.27.3 on Linux or macOS. The module uses the standard library.
 
 ```sh
 go install github.com/kimjooyoon/gooo-ci-domain/cmd/gooo-ci-domain@latest

@@ -36,7 +36,7 @@ func repository83147(t *testing.T) (string, string, string) {
 	t.Helper()
 	root := t.TempDir()
 	files := map[string]string{
-		"go.mod":      "module fixture83147.example/domain\n\ngo 1.27.2\n",
+		"go.mod":      "module fixture83147.example/domain\n\ngo 1.27.3\n",
 		"a/a.go":      "package a\nfunc Value() int { return 5 }\n",
 		"b/b.go":      "package b\nimport \"fixture83147.example/domain/a\"\nfunc Value() int {return a.Value()+11}\n",
 		"b/b_test.go": "package b\nimport \"testing\"\nfunc TestValue83147(t *testing.T){if Value()!=20{t.Fatal(Value())}}\n",

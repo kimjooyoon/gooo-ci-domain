@@ -14,7 +14,7 @@ import (
 
 func TestWorkAdmissionDiagnosticRetainsUnexecutedOrigin(t *testing.T) {
 	root, outside := t.TempDir(), t.TempDir()
-	write83147(t, root, "go.mod", "module admission-diagnostic.example/domain\n\ngo 1.27.2\n")
+	write83147(t, root, "go.mod", "module admission-diagnostic.example/domain\n\ngo 1.27.3\n")
 	write83147(t, root, "source.go", "package diagnostic\nconst Value = 18018\n")
 	git83147(t, root, "init", "-q")
 	git83147(t, root, "add", ".")

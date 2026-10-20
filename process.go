@@ -66,7 +66,7 @@ func controlledEnvironment(parent []string) []string {
 			result = append(result, entry)
 		}
 	}
-	return append(result, "GOMAXPROCS=2", "GOWORK=off", "GOTOOLCHAIN=go1.27.2")
+	return append(result, "GOMAXPROCS=2", "GOWORK=off", "GOTOOLCHAIN=go1.27.3")
 }
 func commandOutput(ctx context.Context, root, name string, args []string) ([]byte, error) {
 	output := &limitedOutput{}
