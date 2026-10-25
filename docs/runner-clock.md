@@ -22,6 +22,12 @@ The caller retains original GitHub API responses. The jobs response must contain
 the complete paginated current attempt: `{ "total_count": N, "jobs": [...] }`.
 Input hashes, job IDs, observation time, original workflow creation, wall time,
 active time, runner-free time and remaining allowance accompany the decision.
+Charged jobs require a positive runner identity. Unassigned job IDs are retained
+separately. GitHub can populate `started_at` while a job is still queued; that
+timestamp alone does not establish runner work. Cancelled/skipped jobs with no
+runner and no steps also retain their timestamps without spending work time.
+Missing assignment for a running/completed executed job, contradictory queued
+assignment, or cancelled work with steps but no runner refuses observation.
 Missing intervals, foreign identities, duplicate IDs, future/reversed timestamps,
 truncated populations, an absent current job or an unsuccessful producer refuse
 admission. The current job must be in progress. Inputs are bounded to 4 MiB each
@@ -61,3 +67,9 @@ allowance and reject equality with the ceiling. A discrete occupied-second
 oracle checks 256 interval populations independently of the interval-merging
 algorithm. These results test accounting. Successful remote proof generation
 still requires an exact-head workflow run after integration.
+
+The first integration run, 40146229341, was cancelled before runner assignment
+after observing a populated `started_at` on its queued preparation job. Its
+original cancelled/unassigned job projection is retained in a second fixture.
+The previous interval reader incorrectly charged its 137 seconds as work. This
+counterexample is checked alongside queued timestamps and unknown assignments.
