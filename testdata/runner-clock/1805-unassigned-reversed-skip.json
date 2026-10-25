@@ -1,0 +1,18 @@
+{
+  "source": "https://github.com/kimjooyoon/meta-ontology-go/actions/runs/40196229717/job/121178325041",
+  "note": "Field projection from the original completed attempt. This skipped job has no runner and no steps. Its timestamps are observations, not an executed interval. This fixture does not replace original CI evidence.",
+  "original_jobs_sha256": "9a28f3a83857ebcc36c0dc165f22d1c81465379866c4e02d4b66c5992340af6f",
+  "job": {
+    "id": 121178325041,
+    "run_id": 40196229717,
+    "run_attempt": 1,
+    "head_sha": "db97adf7c405060f1138302b7bce04beddd677c0",
+    "name": "COHERENCE boundary probe",
+    "status": "completed",
+    "conclusion": "skipped",
+    "started_at": "2026-10-25T13:11:41Z",
+    "completed_at": "2026-10-25T13:11:40Z",
+    "runner_id": null,
+    "steps": []
+  }
+}

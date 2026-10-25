@@ -28,7 +28,10 @@ timestamp alone does not establish runner work. Cancelled/skipped jobs with no
 runner and no steps also retain their timestamps without spending work time.
 Missing assignment for a running/completed executed job, contradictory queued
 assignment, or cancelled work with steps but no runner refuses observation.
-Missing intervals, foreign identities, duplicate IDs, future/reversed timestamps,
+Unassigned terminal timestamps are checked independently against workflow creation
+and observation time. GitHub can record them in reverse order even though no
+runner interval exists. Executed work still requires an ordered interval.
+Missing execution intervals, foreign identities, duplicate IDs, future timestamps,
 truncated populations, an absent current job or an unsuccessful producer refuse
 admission. The current job must be in progress. Inputs are bounded to 4 MiB each
 and 4,096 jobs. GitHub's API is the observation authority; missing API data is not
@@ -73,3 +76,13 @@ after observing a populated `started_at` on its queued preparation job. Its
 original cancelled/unassigned job projection is retained in a second fixture.
 The previous interval reader incorrectly charged its 137 seconds as work. This
 counterexample is checked alongside queued timestamps and unknown assignments.
+
+The compiler's original dev run
+[40196229717](https://github.com/kimjooyoon/meta-ontology-go/actions/runs/40196229717)
+passed the six checks but failed result assembly when a skipped probe had
+`started_at=13:11:41Z` and `completed_at=13:11:40Z`. Its runner was null and steps
+were empty. `1805-unassigned-reversed-skip.json` retains that job's original field
+projection and the SHA-256 of the complete jobs response. It is a regression
+fixture, not a replacement CI result. Tests retain the skipped ID without charging
+time; changing it to assigned work or adding steps still refuses the reversed
+interval. Original failed workflow results remain unchanged.
