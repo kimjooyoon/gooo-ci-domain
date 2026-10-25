@@ -167,8 +167,9 @@ func clockJobInterval(job ClockJob, created, now time.Time) (runnerInterval, boo
 		if job.StartedAt != nil && (job.StartedAt.Before(created) || job.StartedAt.After(now)) {
 			return fail()
 		}
-		if job.CompletedAt != nil && (job.CompletedAt.Before(created) || job.CompletedAt.After(now) ||
-			job.StartedAt != nil && job.CompletedAt.Before(*job.StartedAt)) {
+		// No runner interval exists here. GitHub's unassigned terminal
+		// timestamps can be reversed; each must still belong to this run.
+		if job.CompletedAt != nil && (job.CompletedAt.Before(created) || job.CompletedAt.After(now)) {
 			return fail()
 		}
 		return runnerInterval{}, false, nil
