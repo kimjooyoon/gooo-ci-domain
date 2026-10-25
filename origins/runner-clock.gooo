@@ -1,0 +1,14 @@
+package cibudgetdomain
+namespace cibudgetdomain
+
+entity Integer id "urn:gooo:type:integer"
+entity Text id "urn:gooo:type:text"
+
+# The union of observed runner intervals spends one common work allowance.
+# Overlapping jobs spend it once; runner-free gaps retain their own observation.
+activity AdmitRunnerClock(Integer, Integer) -> Text id "urn:gooo:ci-domain:admit-runner-clock" computes `
+if input1 <= 0 || input1 > 9223372036854 { return "INVALID_DEADLINE" }
+if input0 < 0 { return "INVALID_COST" }
+if input0 >= input1 { return "DEADLINE_EXCEEDED" }
+return "READY"
+`
