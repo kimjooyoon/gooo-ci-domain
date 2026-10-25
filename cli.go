@@ -12,12 +12,15 @@ import (
 )
 
 func Main(args []string, stdout, stderr io.Writer) int {
+	if len(args) > 0 && args[0] == "runner-clock" {
+		return MainRunnerClock(args[1:], stdout, stderr)
+	}
 	if len(args) > 0 && args[0] == "work" {
 		return MainWork(args[1:], stdout, stderr)
 	}
 	start := time.Now()
 	if len(args) == 0 {
-		fmt.Fprintln(stderr, "usage: gooo-ci-domain collect|plan|check|improve|verify|work [flags]")
+		fmt.Fprintln(stderr, "usage: gooo-ci-domain collect|plan|check|improve|verify|work|runner-clock [flags]")
 		return 2
 	}
 	flags := flag.NewFlagSet(args[0], flag.ContinueOnError)
