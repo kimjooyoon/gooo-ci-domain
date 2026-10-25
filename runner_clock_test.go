@@ -53,8 +53,9 @@ func TestRunnerClockDoesNotResetAcrossSequentialStages(t *testing.T) {
 	start := run.CreatedAt
 	makeJob := func(id int64, name, status string, from, into int) ClockJob {
 		a, b := start.Add(time.Duration(from)*time.Minute), start.Add(time.Duration(into)*time.Minute)
+		runner := id + 100
 		j := ClockJob{ID: id, RunID: bind.RunID, RunAttempt: 1, HeadSHA: bind.Head, Name: name,
-			Status: status, Conclusion: "success", StartedAt: &a, CompletedAt: &b}
+			Status: status, Conclusion: "success", StartedAt: &a, CompletedAt: &b, RunnerID: &runner}
 		if status == "in_progress" {
 			j.CompletedAt = nil
 			j.Conclusion = ""
