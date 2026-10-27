@@ -2,6 +2,7 @@ package cibudgetdomain
 
 import (
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -24,7 +25,13 @@ func MainRunnerClock(args []string, stdout, stderr io.Writer) int {
 	if flags.Parse(args) != nil || flags.NArg() != 0 {
 		return 2
 	}
-	fail := func(err error) int { fmt.Fprintln(stderr, err); return 1 }
+	fail := func(err error) int {
+		fmt.Fprintln(stderr, err)
+		if _, ok := errors.AsType[*ClockSnapshotPendingError](err); ok {
+			return 75
+		}
+		return 1
+	}
 	var run ClockRun
 	var jobs ClockJobs
 	runRaw, err := readClockAPI(*runPath, &run)

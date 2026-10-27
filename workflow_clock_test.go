@@ -19,7 +19,7 @@ func TestWorkflowRetainsBothClocksBeforeSetup(t *testing.T) {
 	if len(parts) != 2 {
 		t.Fatal("one clock owner required")
 	}
-	clock := strings.Split(parts[1], "      - uses: actions/checkout@v7\n")[0]
+	clock, _, _ := strings.Cut(parts[1], "      - uses: actions/checkout@v7\n")
 	run := strings.Split(clock, "        run: |\n")
 	if len(run) != 2 {
 		t.Fatal("clock must bind before checkout and setup")
