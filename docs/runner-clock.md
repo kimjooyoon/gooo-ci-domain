@@ -32,10 +32,22 @@ Unassigned terminal timestamps are checked independently against workflow creati
 and observation time. GitHub can record them in reverse order even though no
 runner interval exists. Executed work still requires an ordered interval.
 Missing execution intervals, foreign identities, duplicate IDs, future timestamps,
-truncated populations, an absent current job or an unsuccessful producer refuse
-admission. The current job must be in progress. Inputs are bounded to 4 MiB each
+truncated populations or an unsuccessful producer refuse admission. The current
+job must be in progress. Inputs are bounded to 4 MiB each
 and 4,096 jobs. GitHub's API is the observation authority; missing API data is not
 reconstructed from local guesses or earlier attempts.
+
+An otherwise valid snapshot with an absent or unassigned pending current job
+returns exit status **75**, writes a diagnostic to stderr and emits no clock on
+stdout. The pending statuses are `queued`, `waiting`, `pending` and `requested`.
+A caller may reobserve the same source/run/attempt within its acquisition deadline,
+retaining each original response. It must keep the original allowance. This state
+does not admit work, fill in a runner assignment, or restart the workflow.
+Foreign or duplicate identities, a failed producer, malformed intervals and a
+terminal current job return status 1; they cannot become refreshable by placing a
+pending row first. An exhausted allowance also returns 1, with its observed clock.
+Collection time becomes part of the runner interval when a subsequent snapshot
+observes the current job. Publication refresh does not grant another work budget.
 
 The source activity `AdmitRunnerClock` in `policy.gooo` owns admission. The Go
 adapter observes physical timestamps and computes interval union. Its generated

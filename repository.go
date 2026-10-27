@@ -91,7 +91,7 @@ func CollectWithWorkers(ctx context.Context, root, base, head string, workers in
 	if err != nil {
 		return result, err
 	}
-	for _, path := range strings.Split(string(changed), "\x00") {
+	for path := range strings.SplitSeq(string(changed), "\x00") {
 		if path != "" {
 			result.Changes = append(result.Changes, path)
 		}

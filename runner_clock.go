@@ -111,15 +111,19 @@ type clockPopulation struct {
 
 func clockIntervals(run ClockRun, jobs []ClockJob, bind ClockBinding, now time.Time) (clockPopulation, error) {
 	population := clockPopulation{active: []int64{}}
-	seen, current, producer := map[int64]bool{}, 0, 0
+	if err := validateClockJobIdentities(jobs, bind); err != nil {
+		return clockPopulation{}, err
+	}
+	current, producer := 0, 0
+	var pending *ClockSnapshotPendingError
 	for _, job := range jobs {
-		if job.ID <= 0 || seen[job.ID] || job.RunID != bind.RunID || job.RunAttempt != bind.Attempt || job.HeadSHA != bind.Head {
-			return clockPopulation{}, fmt.Errorf("runner clock job %q has a duplicate or different source origin", job.Name)
-		}
-		seen[job.ID] = true
 		if job.Name == bind.CurrentJob {
 			current++
-			if job.Status != "in_progress" {
+			switch job.Status {
+			case "queued", "waiting", "pending", "requested":
+				pending = &ClockSnapshotPendingError{Job: job.Name, Status: job.Status}
+			case "in_progress":
+			default:
 				return clockPopulation{}, fmt.Errorf("current runner job is not in progress")
 			}
 		}
@@ -140,8 +144,14 @@ func clockIntervals(run ClockRun, jobs []ClockJob, bind ClockBinding, now time.T
 			population.unassigned = append(population.unassigned, job.ID)
 		}
 	}
-	if current != 1 || producer != 1 {
+	if current > 1 || producer != 1 {
 		return clockPopulation{}, fmt.Errorf("runner clock requires one current and one producer job")
+	}
+	if current == 0 {
+		pending = &ClockSnapshotPendingError{Job: bind.CurrentJob, Status: "absent"}
+	}
+	if pending != nil {
+		return clockPopulation{}, pending
 	}
 	slices.Sort(population.active)
 	slices.Sort(population.unassigned)

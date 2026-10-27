@@ -7,10 +7,10 @@ import (
 
 func TestFactoredGlobalInputsPreserveObligations92431(t *testing.T) {
 	repository := Repository{Digest: "fresh-domain92431", Profile: "declared-runtime92431", Workers: 2}
-	for index := 0; index < 512; index++ {
+	for index := range 512 {
 		repository.Packages = append(repository.Packages, PackageInput{ImportPath: fmt.Sprintf("domain92431.example/p%d", index), Dir: fmt.Sprintf("p%d", index), GoFiles: []string{"source.go"}})
 	}
-	for index := 0; index < 400; index++ {
+	for index := range 400 {
 		repository.Changes = append(repository.Changes, fmt.Sprintf("input-%d.gooo", index))
 	}
 	if err := repository.deriveGraph(); err != nil {
