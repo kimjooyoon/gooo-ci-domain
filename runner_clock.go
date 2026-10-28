@@ -2,6 +2,7 @@ package cibudgetdomain
 
 import (
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"slices"
 	"time"
@@ -135,6 +136,10 @@ func clockIntervals(run ClockRun, jobs []ClockJob, bind ClockBinding, now time.T
 		}
 		interval, active, err := clockJobInterval(job, run.CreatedAt, now)
 		if err != nil {
+			if reserved, ok := errors.AsType[*ClockSnapshotPendingError](err); ok {
+				pending = reserved
+				continue
+			}
 			return clockPopulation{}, err
 		}
 		if active {
@@ -163,9 +168,12 @@ func clockJobInterval(job ClockJob, created, now time.Time) (runnerInterval, boo
 		return runnerInterval{}, false, fmt.Errorf("invalid runner interval for %q", job.Name)
 	}
 	if job.Status == "queued" || job.Status == "waiting" || job.Status == "pending" || job.Status == "requested" {
-		if job.RunnerID != nil && *job.RunnerID != 0 || job.CompletedAt != nil ||
+		if job.RunnerID != nil && *job.RunnerID < 0 || job.CompletedAt != nil || len(job.Steps) != 0 ||
 			job.StartedAt != nil && (job.StartedAt.Before(created) || job.StartedAt.After(now)) {
 			return fail()
+		}
+		if job.RunnerID != nil && *job.RunnerID > 0 {
+			return runnerInterval{}, false, &ClockSnapshotPendingError{Job: job.Name, Status: job.Status}
 		}
 		return runnerInterval{}, false, nil
 	}

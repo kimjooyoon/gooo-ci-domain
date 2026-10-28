@@ -1,0 +1,13 @@
+{
+  "schema": "gooo/runner-clock-counterexample/v1",
+  "source_run": 40765497394,
+  "attempt": 1,
+  "source_head": "f50eab412f8b3bd79bf7cc49552a426f1b2bd6ac",
+  "failed_job": 123088728675,
+  "reserved_job": 123088728901,
+  "original_artifact": 12850252357,
+  "archive_sha256": "1ee3b45aa504a0b26adfb9b998e8b52264b1722706afb7d4353554e82a4a3a87",
+  "retrospective_observed_at": "2026-10-28T20:44:08Z",
+  "observation_scope": "original exact API responses retained in ZIP; observation time is a retrospective whole-second projection from the failure log, not a fresh clock",
+  "failure": "queued go test -race had runner_id1000420533, a scheduling timestamp, and no steps; this does not establish execution or a contradictory source"
+}

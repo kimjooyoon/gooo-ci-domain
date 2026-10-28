@@ -10,7 +10,7 @@ type ClockSnapshotPendingError struct {
 }
 
 func (err *ClockSnapshotPendingError) Error() string {
-	return fmt.Sprintf("current runner job %q is not yet observed in progress (status=%q)", err.Job, err.Status)
+	return fmt.Sprintf("runner job %q has no execution-ready snapshot (status=%q)", err.Job, err.Status)
 }
 
 func validateClockJobIdentities(jobs []ClockJob, bind ClockBinding) error {

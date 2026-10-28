@@ -26,8 +26,8 @@ Charged jobs require a positive runner identity. Unassigned job IDs are retained
 separately. GitHub can populate `started_at` while a job is still queued; that
 timestamp alone does not establish runner work. Cancelled/skipped jobs with no
 runner and no steps also retain their timestamps without spending work time.
-Missing assignment for a running/completed executed job, contradictory queued
-assignment, or cancelled work with steps but no runner refuses observation.
+Missing assignment for a running/completed executed job, a queued job with
+execution steps, or cancelled work with steps but no runner refuses observation.
 Unassigned terminal timestamps are checked independently against workflow creation
 and observation time. GitHub can record them in reverse order even though no
 runner interval exists. Executed work still requires an ordered interval.
@@ -48,6 +48,13 @@ terminal current job return status 1; they cannot become refreshable by placing 
 pending row first. An exhausted allowance also returns 1, with its observed clock.
 Collection time becomes part of the runner interval when a subsequent snapshot
 observes the current job. Publication refresh does not grant another work budget.
+
+GitHub can also publish a positive runner ID while a job remains queued with no
+steps. This is an assignment reservation, not an execution interval. Such a row,
+including a different job in the same attempt, requests another snapshot with
+exit 75 and emits no clock. It is not charged as work or accepted as free time.
+Every row is still checked before returning a pending result; a later foreign
+identity, failed producer or malformed interval remains a terminal error.
 
 The source activity `AdmitRunnerClock` in `policy.gooo` owns admission. The Go
 adapter observes physical timestamps and computes interval union. Its generated
@@ -98,3 +105,12 @@ projection and the SHA-256 of the complete jobs response. It is a regression
 fixture, not a replacement CI result. Tests retain the skipped ID without charging
 time; changing it to assigned work or adding steps still refuses the reversed
 interval. Original failed workflow results remain unchanged.
+
+Run [40765497394](https://github.com/kimjooyoon/meta-ontology-go/actions/runs/40765497394)
+failed before its `go test` command when the `go test -race` row was queued,
+had runner ID `1000420533`, and had no execution steps. The exact original API
+responses and failure diagnostic are retained in
+`40765497394-assigned-queued.zip`, bound to the original artifact archive digest.
+Its test observation time is an explicitly retrospective whole-second projection
+of the failure log. A synthetic later publication checks that occupied time
+continues to consume the same allowance; it is not fresh CI evidence.
