@@ -147,6 +147,7 @@ func TestRunnerSnapshotContradictionsAreTerminal(t *testing.T) {
 						case "assigned-queued":
 							runner := int64(1)
 							job.RunnerID = &runner
+							job.Steps = []struct{}{{}}
 						}
 					}
 					if job.Name == bind.ProducerJob && mutation == "missing-producer" {
